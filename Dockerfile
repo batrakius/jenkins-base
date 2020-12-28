@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-stretch
+FROM openjdk:8u275-jdk
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
@@ -32,7 +32,7 @@ RUN mkdir -p $JENKINS_HOME \
 RUN mkdir -p ${REF}/init.groovy.d
 
 # Use tini as subreaper in Docker container to adopt zombie processes
-ARG TINI_VERSION=v0.16.1
+ARG TINI_VERSION=v0.19.0
 COPY tini_pub.gpg ${JENKINS_HOME}/tini_pub.gpg
 RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture) -o /sbin/tini \
   && curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture).asc -o /sbin/tini.asc \
@@ -43,7 +43,7 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.234}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.263.1}
 
 # jenkins.war checksum, download will be validated using it
 #ARG JENKINS_SHA=33a6c3161cf8de9c8729fd83914d781319fd1569acf487c7b1121681dba190a5
@@ -92,7 +92,7 @@ RUN set -x \
     && apt-get update \
     && apt-get install -y git
     
-ENV NODE_VERSION 12.14.0                                                                                                                      
+ENV NODE_VERSION 14.15.3                                                                                                                      
                                                                                                                                               
 RUN buildDeps='xz-utils' \                                                                                                                    
     && ARCH= && dpkgArch="$(dpkg --print-architecture)" \                                                                                     
@@ -134,7 +134,7 @@ RUN buildDeps='xz-utils' \
     && apt-get purge -y --auto-remove $buildDeps \                                                                                            
     && ln -s /usr/local/bin/node /usr/local/bin/nodejs                                                                                        
                                                                                                                                               
-ENV YARN_VERSION 1.21.1                                                                                                                       
+ENV YARN_VERSION 1.22.5                                                                                                                       
                                                                                                                                               
 RUN set -ex \                                                                                                                                 
   && for key in \                                                                                                                             
