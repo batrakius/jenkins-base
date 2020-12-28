@@ -1,1 +1,2 @@
 # jenkins-base
+yes
