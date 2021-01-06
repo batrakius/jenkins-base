@@ -72,3 +72,5 @@ blueocean
 performance-signature-dynatracesaas
 ldap
 redis-notifier
+generic-webhook-trigger
+
